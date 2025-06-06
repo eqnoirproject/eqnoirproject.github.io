@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EQNOIR – A crypto movement for Black and LGBTQIA+ empowerment">
+  <title>EQNOIR Project</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+      scroll-behavior: smooth;
+      overflow: hidden;
+    }
+
+    .content {
+      position: absolute;
+      bottom: 6%;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+      animation: slideUp 2s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(60px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 10px 0;
+    }
+
+    .btn {
+      margin: 8px;
+      padding: 12px 22px;
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+      border-radius: 0;
+      font-weight: bold;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: none;
+    }
+
+    .btn:hover {
+      background-color: white;
+      color: black;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="button-row">
+      <a class="btn" href="https://snapshot.org/#/eqnoir.eth" target="_blank">DAO VOTE</a>
+      <a class="btn" href="#learn-more">Learn More</a>
+    </div>
+    <div class="button-row">
+      <a class="btn" href="https://instagram.com/eqnoirlabs" target="_blank">Instagram</a>
+      <a class="btn" href="https://twitter.com/eqnoirproject" target="_blank">Twitter</a>
+    </div>
+  </div>
+</body>
+</html>
