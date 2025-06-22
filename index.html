@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EQNOIR Launch</title>
+    <script>
+        function checkPurchaseAmount(amount) {
+            const limit = 500_000_000_000;
+            if (amount > limit) {
+                document.getElementById('lockModal').style.display = 'block';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('lockModal').style.display = 'none';
+        }
+    </script>
+    <style>
+        #lockModal {
+            display: none;
+            position: fixed;
+            top: 30%;
+            left: 10%;
+            right: 10%;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #000;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to EQNOIR</h1>
+    <p>Buy EQNOIR Tokens</p>
+    <input type="number" id="amountInput" placeholder="Enter amount to purchase">
+    <button onclick="checkPurchaseAmount(parseInt(document.getElementById('amountInput').value))">Purchase</button>
+
+    <div id="lockModal">
+        <p><strong>Notice:</strong> Purchases over 500B EQNOIR will be subject to a 100-day staking lock. Exempt: Board, DAO, and Gifting Wallets.</p>
+        <p>Bonus APY will be granted for early adoption. Please split large purchases if you wish to avoid locking.</p>
+        <button onclick="closeModal()">Got It</button>
+    </div>
+</body>
+</html>
