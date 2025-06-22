@@ -1,45 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EQNOIR Launch</title>
-    <script>
-        function checkPurchaseAmount(amount) {
-            const limit = 500_000_000_000;
-            if (amount > limit) {
-                document.getElementById('lockModal').style.display = 'block';
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('lockModal').style.display = 'none';
-        }
-    </script>
-    <style>
-        #lockModal {
-            display: none;
-            position: fixed;
-            top: 30%;
-            left: 10%;
-            right: 10%;
-            padding: 20px;
-            background: #fff;
-            border: 2px solid #000;
-            z-index: 1000;
-        }
-    </style>
+    <title>EQNOIR | Financial Power Reimagined</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h1>Welcome to EQNOIR</h1>
-    <p>Buy EQNOIR Tokens</p>
-    <input type="number" id="amountInput" placeholder="Enter amount to purchase">
-    <button onclick="checkPurchaseAmount(parseInt(document.getElementById('amountInput').value))">Purchase</button>
-
-    <div id="lockModal">
-        <p><strong>Notice:</strong> Purchases over 500B EQNOIR will be subject to a 100-day staking lock. Exempt: Board, DAO, and Gifting Wallets.</p>
-        <p>Bonus APY will be granted for early adoption. Please split large purchases if you wish to avoid locking.</p>
-        <button onclick="closeModal()">Got It</button>
-    </div>
+<body class="dark-theme">
+    <header>
+        <img src="logo.png" alt="EQNOIR Logo" class="logo">
+        <h1>Welcome to EQNOIR</h1>
+        <p>The Digital Reserve for Black Empowerment, Tech, and Financial Legacy</p>
+        <a href="buy.html" class="btn">Buy EQNOIR</a>
+    </header>
+    <main>
+        <section>
+            <h2>What is EQNOIR?</h2>
+            <p>EQNOIR is a decentralized cryptocurrency dedicated to uplifting Black, LGBTQIA+, and allied communities through technology, finance, and economic mobility. </p>
+        </section>
+        <section>
+            <h2>Relief Fund</h2>
+            <p>We’ve set aside 100 billion EQNOIR for the Altadena Fire Relief Fund. <a href="relief.html">Learn more & donate.</a></p>
+        </section>
+        <section>
+            <h2>Governance & DAO</h2>
+            <p>EQNOIR is governed by the people. Token holders vote on proposals to shape the future of the ecosystem.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 EQNOIR Labs. All rights reserved.</p>
+    </footer>
 </body>
 </html>

@@ -1,0 +1,44 @@
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0d0d0d;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+header .logo {
+    width: 100px;
+    margin: 10px auto;
+}
+h1 {
+    font-size: 2.5em;
+}
+section {
+    margin-top: 40px;
+}
+.btn, .back-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #00ffd5;
+    color: #000;
+    text-decoration: none;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+form input {
+    padding: 10px;
+    margin: 10px;
+    width: 250px;
+}
+form button {
+    padding: 10px 20px;
+    background-color: #00ffd5;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+.notice {
+    margin-top: 20px;
+    color: #aaa;
+}
