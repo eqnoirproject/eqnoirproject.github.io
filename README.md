@@ -24,7 +24,6 @@ EQNOIR is a BNB Smart Chain-based cryptocurrency created to uplift and economica
 ## 🚀 Live Pages
 
 - **Main Site:** [https://eqnoirproject.github.io](https://eqnoirproject.github.io)
-- **Relief Fund:** [`/relief.html`](https://eqnoirproject.github.io/relief.html)
 
 ---
 
@@ -32,7 +31,6 @@ EQNOIR is a BNB Smart Chain-based cryptocurrency created to uplift and economica
 
 ```
 /index.html          # Main homepage
-/relief.html         # Altadena fire relief page
 /style.css           # Global styles
 /images/             # Logos and graphics (add logo here)
 ```
