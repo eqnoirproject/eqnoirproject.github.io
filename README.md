@@ -6,11 +6,7 @@ Welcome to the official EQNOIR GitHub repository and website.
 
 ---
 
-## 🔥 Altadena & Pasadena Fire Relief Fund
 
-EQNOIR has committed **100 billion tokens** to support families affected by recent fires in Altadena, California—a historically Black and under-supported community. We're building a donation platform to help raise awareness and provide resources during this critical time.
-
-👉 Visit the relief page: [`/relief.html`](https://eqnoirproject.github.io/relief.html)
 
 ---
 
