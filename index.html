@@ -6,50 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EQNOIR</title>
     <style>
-        body {
-            background: url('eqnoir_bg.jpg') no-repeat center center fixed;
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: url('eqnoir_city_bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            color: #ffffff;
             font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 100px 20px;
+            color: #ffffff;
         }
-        h1 {
-            font-size: 4em;
-            color: #FFD700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px #000000;
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
         }
         .socials {
-            margin: 40px 0;
-            font-size: 1.5em;
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
         }
         .socials a {
-            margin: 0 15px;
+            padding: 12px 25px;
+            background: rgba(0, 0, 0, 0.4); /* slightly transparent background */
+            border-radius: 8px;
             text-decoration: none;
             color: #FFD700;
-            transition: color 0.3s;
+            font-size: 1.3em;
+            transition: background 0.3s, transform 0.2s;
         }
         .socials a:hover {
-            color: #ffffff;
+            background: rgba(255, 215, 0, 0.7); /* more solid on hover */
+            color: #000000;
+            transform: scale(1.05);
+        }
+        .slogan {
+            margin-top: 15px;
+            font-size: 1.5em;
+            text-shadow: 2px 2px 5px #000000;
         }
         .footer {
-            margin-top: 50px;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
             font-size: 0.9em;
-            color: #dddddd;
+            color: #cccccc;
+            text-align: center;
             text-shadow: 1px 1px 3px #000000;
         }
     </style>
 </head>
 <body>
-    <h1>EQNOIR</h1>
-    <div class="socials">
-        <a href="https://twitter.com/eqnoir" target="_blank">Twitter</a>
-        <a href="https://discord.gg/eqnoir" target="_blank">Discord</a>
-        <a href="https://instagram.com/eqnoir" target="_blank">Instagram</a>
+    <div class="container">
+        <div class="socials">
+            <a href="https://twitter.com/eqnoirproject" target="_blank">Twitter</a>
+            <a href="https://discord.gg/eqnoir" target="_blank">Discord</a>
+            <a href="https://instagram.com/eqnoirlabs" target="_blank">Instagram</a>
+        </div>
+        <div class="slogan">
+            The Future of Decentralized Financial Empowerment
+        </div>
     </div>
     <div class="footer">
-        © 2025 EQNOIR Project. All rights reserved.
+        © 2025 EQNOIR Project. All rights reserved.<br>
+        EQNOIR™ is a trademark of EQNOIR Project.<br>
+        All activities are secured and protected under applicable laws.
     </div>
 </body>
 </html>
