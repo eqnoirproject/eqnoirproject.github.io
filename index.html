@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EQNOIR™ — The Future Belongs to Us</title>
+<meta name="theme-color" content="#0a0f16">
+<style>
+  :root{
+    --text:#e8eef5; --muted:#a9bfd6; --accent:#19f0ff; --line:#203445;
+    --up:#22d07a; --down:#ff6b6b;
+  }
+  /* Global background = your image, full site */
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--text);
+    background: url("eqnoir-hero.jpg") center top/cover fixed no-repeat #05080c;
+    font:16px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial;
+  }
+  /* Readability veil */
+  body::before{
+    content:""; position:fixed; inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.7) 60%,rgba(0,0,0,.85));
+    pointer-events:none; z-index:-1;
+  }
+
+  /* Top live ticker */
+  #ticker{position:sticky;top:0;z-index:9999;
+    background: rgba(5,10,16,.8); backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--line); overflow:hidden; white-space:nowrap}
+  #ticker .items{display:inline-block;padding:10px 0;animation:scroll 36s linear infinite}
+  #ticker .chip{display:inline-flex;align-items:center;gap:8px;margin-right:16px;
+    padding:6px 12px;border:1px solid var(--line);border-radius:999px;
+    background:#0a1017;color:#cfe6ff}
+  @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+  /* Hero “EQNOIR” area: we’ll position buttons visually under the word */
+  .hero{min-height:90vh; display:grid; place-items:end center; padding-bottom:6vh}
+  .hero-buttons{display:flex;flex-direction:column;gap:18px; align-items:center;
+    /* Tweak margin-top until the buttons sit just under the EQNOIR word */
+    margin-top: clamp(90px, 21vh, 240px);
+  }
+
+  .btn{
+    background:var(--accent); color:#001018; text-decoration:none;
+    padding:14px 22px; border-radius:14px; font-weight:800; letter-spacing:.2px;
+    box-shadow:0 8px 30px rgba(25,240,255,.25),0 0 0 1px rgba(0,255,255,.25) inset;
+    width:min(92vw,360px); text-align:center; transition:transform .12s ease,filter .2s ease
+  }
+  .btn:hover{transform:translateY(-2px); filter:brightness(1.06)}
+  /* Small ™ badge overlay, near hero center-top (subtle, non-intrusive) */
+  .tm{position:fixed; left:50%; transform:translateX(170px); top:12vh;
+      font-size:12px; color:var(--muted); text-shadow:0 1px 2px rgba(0,0,0,.6)}
+  @media (max-width:600px){ .tm{transform:translateX(120px); top:10vh} }
+
+  /* Content cards for copy below hero (optional) */
+  .container{max-width:1000px; margin:28px auto; padding:0 16px}
+  .card{background:rgba(10,16,23,.75); border:1px solid var(--line); border-radius:14px; padding:20px}
+
+  footer{color:var(--muted); text-align:center; padding:32px 16px}
+  footer .email{margin-top:10px}
+  .warning{font-size:12px; margin-top:10px}
+  .link{color:#8fe6ff; text-decoration:none}
+  .up{color:var(--up)} .down{color:var(--down)}
+</style>
+</head>
+<body>
+
+<!-- Sticky live ticker -->
+<div id="ticker" role="region" aria-label="EQNOIR live ticker">
+  <div id="tickerItems" class="items"><span class="chip">Loading EQNOIR…</span></div>
+</div>
+
+<!-- Tiny ™ near the center word -->
+<div class="tm">EQNOIR™</div>
+
+<!-- Buttons placed visually under the EQNOIR text -->
+<section class="hero" role="banner" aria-label="EQNOIR hero">
+  <div class="hero-buttons">
+    <a class="btn" href="/about">About EQNOIR™</a>
+    <a class="btn" href="/whitepapers">Whitepapers</a>
+    <a class="btn" href="#" onclick="toggleSocials();return false;">Social Media</a>
+    <div id="socials" style="display:none; text-align:center">
+      <a class="btn" href="https://twitter.com/eqnoirproject" target="_blank" rel="noopener">Twitter/X @eqnoirproject</a>
+      <a class="btn" href="https://instagram.com/eqnoirlabs" target="_blank" rel="noopener">Instagram @eqnoirlabs</a>
+      <a class="btn" href="https://t.me/EQNOIR1" target="_blank" rel="noopener">Telegram</a>
+      <a class="btn" href="https://discord.com/invite/EQNOIR" target="_blank" rel="noopener">Discord</a>
+    </div>
+  </div>
+</section>
+
+<!-- Optional copy blocks -->
+<div class="container">
+  <div class="card">
+    <h2 style="margin:0 0 8px">EQNOIR™ — The Future Belongs to Us</h2>
+    <p>Empowering Black and Black LGBTQIA+ communities through DeFi, STEM, fashion, and real estate. Built on BNB Smart Chain.</p>
+    <p><strong>Contract:</strong> <code>0x21cB60543dA121ae3b5473b0A051f3E638E3e69E</code></p>
+  </div>
+</div>
+
+<footer>
+  <p>© <span id="yr"></span> EQNOIR™. All rights reserved. <a class="link" href="/privacy">Privacy Policy</a></p>
+  <p class="warning"><strong>Warning / Disclaimer:</strong> Cryptocurrency carries significant risk, including possible loss of principal. Nothing on this site is financial advice. Always do your own research and comply with local laws.</p>
+  <p class="email"><a class="btn" href="mailto:eqnoirproject@gmail.com">Email Us: eqnoirproject@gmail.com</a></p>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  function toggleSocials(){ const p=document.getElementById('socials'); p.style.display = p.style.display==='none'?'block':'none'; }
+
+  /*** CONFIG (edit these if needed) ***/
+  const CONTRACT = "0x21cB60543dA121ae3b5473b0A051f3E638E3e69E";
+  const CIRC_SUPPLY = 630_000_000_000_000; // set your current circulating supply (for mcap fallback)
+  const TOTAL_SUPPLY = 4_000_000_000_000_000; // 4 quadrillion (for FDV fallback)
+  const BSCSCAN_KEY = ""; // optional: add your BscScan API key to enable holders count
+
+  // helpers
+  const usd = n => isFinite(n) ? n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:10}) : "—";
+  const pct = n => (n>=0?"+":"") + (isFinite(n)?n.toFixed(2):"—") + "%";
+  const num = n => isFinite(n) ? n.toLocaleString() : "—";
+
+  // Source 1: CoinGecko (once listed)
+  async function fromCoinGecko(){
+    try{
+      const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=eqnoir&vs_currencies=usd&include_market_cap=true&include_24hr_change=true&include_24hr_vol=true",{cache:"no-store"});
+      if(!r.ok) throw new Error("cg");
+      const j = await r.json(); if(!j.eqnoir) throw new Error("no cg id");
+      const d = j.eqnoir;
+      return {price:d.usd, chg24:d.usd_24h_change, mcap:d.usd_market_cap, vol24:d.usd_24h_vol};
+    }catch(e){return null}
+  }
+
+  // Source 2: GeckoTerminal (usually available before CG listing)
+  async function fromGeckoTerminal(){
+    try{
+      const r = await fetch(`https://api.geckoterminal.com/api/v2/networks/bsc/tokens/${CONTRACT}`);
+      if(!r.ok) throw new Error("gt");
+      const t = (await r.json()).data?.attributes;
+      return {
+        price: Number(t?.price_usd||0),
+        fdv: Number(t?.fdv_usd||0) || null,
+        mcap: Number(t?.market_cap_usd||0) || null,
+        vol24: Number(t?.total_volume_usd_24h||0) || null
+      };
+    }catch(e){return null}
+  }
+
+  // Source 3: DexScreener (robust fallback + liquidity)
+  async function fromDexScreener(){
+    try{
+      const r = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${CONTRACT}`,{cache:"no-store"});
+      const j = await r.json(); const pairs=j.pairs||[];
+      if(!pairs.length) throw new Error("no pair");
+      const p = pairs.sort((a,b)=>(b.liquidity?.usd||0)-(a.liquidity?.usd||0))[0];
+      return {
+        price:Number(p.priceUsd||0),
+        chg24:Number(p.priceChange?.h24||0),
+        vol24:Number(p.volume?.h24||0),
+        liq:Number(p.liquidity?.usd||0),
+        fdv:Number(p.fdv||0)||null
+      };
+    }catch(e){return null}
+  }
+
+  // Holders via BscScan
+  async function getHolders(){
+    if(!BSCSCAN_KEY) return null;
+    try{
+      const r = await fetch(`https://api.bscscan.com/api?module=token&action=tokenholderlist&contractaddress=${CONTRACT}&page=1&offset=1&apikey=${BSCSCAN_KEY}`,{cache:"no-store"});
+      const j = await r.json();
+      const total = j?.result?.holderCount || (j?.result?.[0]?.TokenHolderNumber ? Number(j.result[0].TokenHolderNumber) : null);
+      return total || null;
+    }catch(e){return null}
+  }
+
+  async function renderTicker(){
+    let src = "cg";
+    let d = await fromCoinGecko();
+    if(!d){ d = await fromGeckoTerminal(); src="gt"; }
+    let liq=null, fdv=null;
+    if(!d){ const x = await fromDexScreener(); src="ds"; if(x){ d={price:x.price, chg24:x.chg24, mcap:x.fdv || (x.price*CIRC_SUPPLY), vol24:x.vol24}; liq=x.liq; fdv=x.fdv || (x.price*TOTAL_SUPPLY); } }
+    if(d && !fdv) fdv = d.mcap ? null : (d.price * TOTAL_SUPPLY); // last-resort FDV
+    const holders = await getHolders();
+
+    const parts = d ? [
+      `Price: ${usd(d.price)} ${isFinite(d.chg24)?`(${pct(d.chg24)})`:""}`,
+      `FDV: ${fdv?usd(fdv):"—"}`,
+      `Market Cap: ${usd(d.mcap || (d.price*CIRC_SUPPLY))}`,
+      `Holders: ${holders?num(holders):"—"}`,
+      `24h Vol: ${usd(d.vol24)}`,
+      ...(liq?[`Liquidity: ${usd(liq)}`]:[]),
+      `Source: ${src.toUpperCase()}`
+    ] : [`EQNOIR: Live data unavailable`];
+
+    const el = document.getElementById("tickerItems");
+    el.innerHTML = parts.map(t=>`<span class="chip">${t}</span>`).join("");
+    el.innerHTML += el.innerHTML; // duplicate for seamless scroll
+  }
+
+  renderTicker();
+  setInterval(renderTicker, 30_000);
+</script>
+</body>
+</html>
