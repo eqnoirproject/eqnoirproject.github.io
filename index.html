@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EQNOIR</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* HERO BACKGROUND */
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: url("CC54A678-5280-4CDD-A559-4AB2EACC72E7.jpeg") no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 100px;
+    }
+
+    /* TICKER */
+    .ticker {
+      width: 100%;
+      background: #0a0a0a;
+      color: #00e5ff;
+      padding: 6px 0;
+      font-size: 14px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-content {
+      display: inline-block;
+      animation: scroll 25s linear infinite;
+    }
+    @keyframes scroll {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .eq-chip {
+      display: inline-block;
+      margin-right: 50px;
+      padding: 2px 8px;
+      border: 1px solid #00e5ff;
+      border-radius: 12px;
+      background: rgba(0,229,255,0.1);
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: block;
+      width: 250px;
+      margin: 12px auto;
+      padding: 15px;
+      background: #00e5ff;
+      color: #000;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #00b3cc;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      padding: 20px;
+      background: #000;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LIVE TICKER -->
+  <div class="ticker">
+    <div id="eq-items" class="ticker-content">
+      Loading EQNOIR data...
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <!-- Buttons directly under EQNOIR text -->
+    <a href="about.html" class="btn">About EQNOIR</a>
+    <a href="whitepapers.html" class="btn">Whitepapers</a>
+    <a href="https://twitter.com/eqnoir" target="_blank" class="btn">Follow on Social Media</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© <span id="yr"></span> EQNOIR™. All rights reserved.</p>
+    <p><a href="privacy.html" style="color:#00e5ff;">Privacy Policy</a></p>
+    <p><strong>Disclaimer:</strong> Cryptocurrency investments carry risk. Do your own research before purchasing EQNOIR. EQNOIR is not responsible for financial losses incurred.</p>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    /** CONFIG **/
+    const EQ_CONTRACT = "0x21cB60543dA121ae3b5473b0A051f3E638E3e69E";
+    const EQ_CIRC_SUPPLY = 630_000_000_000_000; // 630T
+
+    const usd = n => isFinite(n) ? n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:6}) : "—";
+    const pct = n => (n>=0?"+":"") + (isFinite(n)?n.toFixed(2):"—") + "%";
+
+    async function getCoinGecko() {
+      try {
+        const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=eqnoir&vs_currencies=usd&include_market_cap=true&include_24hr_change=true&include_24hr_vol=true");
+        if (!r.ok) throw new Error("CG fetch error");
+        const j = await r.json();
+        const d = j.eqnoir;
+        return {
+          price: d.usd,
+          chg24: d.usd_24h_change,
+          mcap: d.usd_market_cap,
+          vol24: d.usd_24h_vol
+        };
+      } catch(e) {
+        console.error("CG failed", e);
+        return null;
+      }
+    }
+
+    async function getDexscreener(){
+      try {
+        const r = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${EQ_CONTRACT}`);
+        const j = await r.json();
+        const p = (j.pairs||[])[0];
+        return {
+          price: Number(p.priceUsd||0),
+          chg24: Number(p.priceChange?.h24||0),
+          mcap: Number(p.fdv||0) || (Number(p.priceUsd||0) * EQ_CIRC_SUPPLY),
+          vol24: Number(p.volume?.h24||0),
+          liq: Number(p.liquidity?.usd||0)
+        };
+      } catch(e) {
+        console.error("Dexscreener failed", e);
+        return null;
+      }
+    }
+
+    async function renderTicker(){
+      let d = await getCoinGecko();
+      if(!d) d = await getDexscreener();
+
+      const items = d ? [
+        `EQNOIR ${usd(d.price)} (${pct(d.chg24)})`,
+        `Market Cap: ${usd(d.mcap)}`,
+        `24h Vol: ${usd(d.vol24)}`,
+        ...(d.liq ? [`Liquidity: ${usd(d.liq)}`] : [])
+      ] : [`EQNOIR: Live data unavailable`];
+
+      const el = document.getElementById("eq-items");
+      el.innerHTML = items.map(t => `<span class="eq-chip">${t}</span>`).join("");
+      el.innerHTML += el.innerHTML; // Duplicate for infinite scroll
+    }
+
+    renderTicker();
+    setInterval(renderTicker, 30_000);
+  </script>
+</body>
+</html>
