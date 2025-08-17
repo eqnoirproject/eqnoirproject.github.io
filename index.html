@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EQNOIR™</title>
+<meta name="theme-color" content="#0aefff">
+
+<style>
+  :root{
+    --brand:#0aefff;
+    --bg:#0b0f12;
+    --card:#12171c;
+    --text:#eaf8ff;
+    --muted:#a7c3cf;
+    --glow:#67f7ff;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;
+    background: radial-gradient(1200px 700px at 50% -10%, #0d1f28 0%, #0b0f12 40%, #050608 100%);
+    color:var(--text);
+  }
+
+  /* TICKER BADGES */
+  .ticker{position:sticky; top:0; z-index:50; backdrop-filter: blur(6px);
+    background:rgba(7,10,12,.7); border-bottom:1px solid rgba(255,255,255,.06)}
+  .row{display:flex; flex-wrap:wrap; gap:.5rem; padding:.6rem .8rem; align-items:center; justify-content:flex-start}
+  .badge{
+    display:inline-flex; align-items:center; gap:.45rem;
+    padding:.42rem .72rem; border-radius:999px;
+    background:rgba(18,23,28,.9); color:var(--text);
+    border:1px solid rgba(255,255,255,.08); font-weight:600; font-size:.92rem;
+    white-space:nowrap;
+  }
+  .badge .dot{width:.55rem;height:.55rem;border-radius:999px;background:var(--brand); box-shadow:0 0 10px var(--brand)}
+  .up{color:#5cff9d} .down{color:#ff6f6f}
+
+  /* HERO SPINNER (pure CSS, no image paths) */
+  .hero{
+    position:relative; height:40vh; min-height:280px; display:grid; place-items:center; overflow:hidden;
+  }
+  .spinner{
+    position:absolute; inset:0; display:grid; place-items:center; pointer-events:none;
+  }
+  .spinner .ring{
+    width:min(88vmin,800px); height:min(88vmin,800px);
+    border:1px solid rgba(255,255,255,.05); border-radius:50%;
+    transform:rotate(0deg); animation:spin 26s linear infinite;
+  }
+  .spinner .ring::after{
+    content:""; position:absolute; inset:-60px; border-radius:50%;
+    background: radial-gradient(closest-side, transparent 60%, rgba(10,239,255,.08)),
+                conic-gradient(from 0deg, rgba(10,239,255,.2), transparent 35%, transparent 65%, rgba(255,20,147,.18));
+    filter: blur(12px);
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .wordmark{
+    position:relative; font-size: clamp(34px, 8vw, 84px); font-weight:900; letter-spacing:.06em;
+    color:#ffffff; text-shadow:
+      0 0 0 rgba(255,255,255,.5),
+      0 12px 24px rgba(0,0,0,.35),
+      0 0 18px rgba(10,239,255,.35),
+      0 0 44px rgba(255,20,147,.25);
+  }
+  .wordmark .tm{font-size:.35em; vertical-align:super; margin-left:.15em; opacity:.9}
+
+  /* CONTENT */
+  .container{max-width:980px; margin:0 auto; padding:0 16px 80px}
+  .btn{
+    display:block; width:100%; margin:18px auto; text-align:center;
+    background:linear-gradient(180deg, #12f0ff, #06d9ff);
+    color:#001418; font-weight:800; letter-spacing:.02em;
+    padding:20px 22px; border-radius:18px; text-decoration:none; font-size: clamp(18px, 3.7vw, 28px);
+    box-shadow:0 10px 24px rgba(10,239,255,.22), inset 0 0 0 2px rgba(255,255,255,.14);
+    transition: transform .08s ease, filter .12s ease;
+  }
+  .btn:active{transform:scale(.98)}
+  .subgrid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+  @media (min-width:720px){.subgrid{grid-template-columns:repeat(4,1fr)}}
+
+  /* Social emoji buttons */
+  .iconbar{display:flex; gap:18px; justify-content:center; margin:24px 0 8px}
+  .ico{
+    width:64px;height:64px; display:grid; place-items:center; border-radius:14px;
+    background:rgba(255,255,255,.06); backdrop-filter: blur(4px);
+    border:1px solid rgba(255,255,255,.08); text-decoration:none; font-size:30px;
+    box-shadow:0 10px 24px rgba(0,0,0,.25);
+  }
+
+  /* Embed card */
+  .card{background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden}
+  .card h3{margin:0; padding:14px 16px; font-size:18px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,.06)}
+  .card .body{padding:0}
+  iframe{width:100%; border:0; display:block; height:640px}
+
+  /* Footer */
+  footer{margin-top:40px; color:var(--muted); text-align:center}
+  small{display:block; opacity:.86; line-height:1.55}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker" id="ticker">
+  <div class="row" id="badges">
+    <span class="badge"><span class="dot"></span>Source: GT</span>
+    <span class="badge" id="updated">Updated: —</span>
+    <span class="badge" id="price">Price: —</span>
+    <span class="badge" id="fdv">FDV: —</span>
+    <span class="badge" id="mcap">MCap: —</span>
+    <span class="badge" id="liquidity">Liquidity: —</span>
+    <span class="badge" id="vol">24h Vol: —</span>
+    <span class="badge" id="holders" style="display:none">Holders: —</span>
+  </div>
+</div>
+
+<!-- HERO with spinner -->
+<section class="hero">
+  <div class="spinner"><div class="ring"></div></div>
+  <div class="wordmark">EQNOIR<span class="tm">™</span></div>
+</section>
+
+<div class="container">
+
+  <!-- Primary buttons -->
+  <a class="btn" href="#about">About EQNOIR<span class="tm">™</span></a>
+  <a class="btn" href="/EQNOIR_Whitepaper_v1.0.pdf" target="_blank" rel="noopener">Whitepaper (PDF)</a>
+
+  <!-- Socials -->
+  <div class="iconbar">
+    <a class="ico" href="https://x.com/eqnoirproject" target="_blank" aria-label="X / Twitter">🐦</a>
+    <a class="ico" href="https://instagram.com/eqnoirlabs" target="_blank" aria-label="Instagram">📸</a>
+    <a class="ico" href="https://t.me/EQNOIR1" target="_blank" aria-label="Telegram">📲</a>
+    <a class="ico" href="https://discord.gg/" target="_blank" aria-label="Discord">💬</a>
+  </div>
+
+  <a class="btn" href="mailto:eqnoirproject@gmail.com">Contact Us</a>
+
+  <!-- GeckoTerminal embed -->
+  <div class="card" style="margin-top:22px">
+    <h3>Live Chart</h3>
+    <div class="body">
+      <iframe
+        src="https://www.geckoterminal.com/bsc/pools/0x47ab12e013f1289c8c5f83f962fc01bb496beaa4/embed?embed=1&info=0&swaps=0"
+        title="EQNOIR/WBNB – GeckoTerminal">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div id="about" class="card" style="margin-top:22px">
+    <h3>About EQNOIR<span class="tm">™</span></h3>
+    <div class="body" style="padding:18px">
+      <p><strong>EQNOIR</strong> is a community-first project uplifting Black and Black LGBTQIA+ communities through
+      DeFi, STEM, fashion, and real estate. Built on BNB Smart Chain, EQNOIR pairs transparency with culture-forward utility.</p>
+    </div>
+  </div>
+
+  <footer>
+    <small>© 2025 EQNOIR<span class="tm">™</span>. All Rights Reserved.</small>
+    <small>Cryptocurrency involves risk. Please do your own research before investing. EQNOIR<span class="tm">™</span> is not responsible for financial losses.</small>
+  </footer>
+</div>
+
+<script>
+/* ========= LIVE TICKER (GeckoTerminal + optional BscScan holders) ========= */
+const POOL_ADDRESS = "0x47ab12e013f1289c8c5f83f962fc01bb496beaa4"; // your pool
+const GT_URL = `https://api.geckoterminal.com/api/v2/networks/bsc/pools/${POOL_ADDRESS}`;
+const TOKEN_ADDRESS = "0x21cB60543dA121ae3b5473b0A051f3E638E3e69E"; // EQNOIR token (for holders)
+const BSCSCAN_KEY = ""; // <-- optional: paste your BscScan API key to enable live holders
+
+const el = id => document.getElementById(id);
+const fmtUSD = (n)=>{
+  if(n === null || n === undefined || isNaN(n)) return "—";
+  const v = Number(n);
+  if(v >= 1) return "$" + v.toLocaleString(undefined,{maximumFractionDigits:2});
+  if(v >= 0.01) return "$" + v.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:4});
+  // tiny prices
+  return "$" + v.toExponential(2);
+};
+const fmtNum = (n)=>{
+  if(n === null || n === undefined || isNaN(n)) return "—";
+  const v = Number(n);
+  if(v >= 1e9) return (v/1e9).toFixed(2)+"B";
+  if(v >= 1e6) return (v/1e6).toFixed(2)+"M";
+  if(v >= 1e3) return (v/1e3).toFixed(2)+"K";
+  return v.toLocaleString();
+};
+
+async function loadGT(){
+  try{
+    const r = await fetch(GT_URL);
+    const j = await r.json();
+    const a = j?.data?.attributes || {};
+    const price = a?.base_token_price_usd ?? a?.quote_token_price_usd;
+    const fdv   = a?.fdv_usd;
+    const mcap  = a?.market_cap_usd; // sometimes null for new tokens
+    const liq   = a?.reserve_in_usd;
+    const vol24 = a?.volume_usd?.h24 ?? a?.volume_usd;
+
+    el("price").textContent = "Price: " + fmtUSD(price);
+    el("fdv").textContent   = "FDV: "   + fmtUSD(fdv);
+    el("mcap").textContent  = "MCap: "  + (mcap ? fmtUSD(mcap) : "—");
+    el("liquidity").textContent = "Liquidity: " + fmtUSD(liq);
+    el("vol").textContent   = "24h Vol: " + fmtUSD(vol24);
+
+    const ts = a?.updated_at ?? Date.now();
+    const dt = new Date(ts);
+    el("updated").textContent = "Updated: " + dt.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', second:'2-digit'});
+
+  }catch(e){
+    el("price").textContent = "Price: —";
+    el("fdv").textContent = "FDV: —";
+    el("mcap").textContent = "MCap: —";
+    el("liquidity").textContent = "Liquidity: —";
+    el("vol").textContent = "24h Vol: —";
+    el("updated").textContent = "Updated: error";
+    console.error(e);
+  }
+}
+
+async function loadHolders(){
+  if(!BSCSCAN_KEY) return; // only if you add your key
+  try{
+    const url = `https://api.bscscan.com/api?module=token&action=tokenholdercount&contractaddress=${TOKEN_ADDRESS}&apikey=${BSCSCAN_KEY}`;
+    const r = await fetch(url);
+    const j = await r.json();
+    const count = Number(j?.result);
+    if(Number.isFinite(count)){
+      const h = el("holders");
+      h.style.display = "inline-flex";
+      h.textContent = "Holders: " + count.toLocaleString();
+    }
+  }catch(e){ console.warn("Holders unavailable"); }
+}
+
+loadGT(); loadHolders();
+setInterval(loadGT, 30_000); // refresh every 30s
+</script>
+</body>
+</html>
