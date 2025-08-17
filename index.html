@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EQNOIR™</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: url('eqnoir-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      text-align: center;
+    }
+    header {
+      padding-top: 20px;
+    }
+    h1 {
+      font-size: 3em;
+      margin: 0;
+      text-shadow: 2px 2px 6px #000;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    .buttons a {
+      display: block;
+      margin: 10px auto;
+      padding: 15px;
+      width: 80%;
+      max-width: 300px;
+      border-radius: 10px;
+      background: cyan;
+      color: black;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .buttons a:hover {
+      background: #00e6e6;
+    }
+    #ticker {
+      margin: 30px auto;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    #tickerItems {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 30s linear infinite;
+    }
+    #ticker .chip {
+      display: inline-block;
+      margin: 0 15px;
+      padding: 5px 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 5px;
+    }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      font-size: 0.9em;
+    }
+    .socials a {
+      margin: 0 10px;
+      font-size: 2em;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EQNOIR™</h1>
+  </header>
+
+  <!-- Live Ticker -->
+  <div id="ticker"><div id="tickerItems">Loading EQNOIR…</div></div>
+
+  <!-- Buttons -->
+  <div class="buttons">
+    <a href="#about">About EQNOIR™</a>
+    <a href="EQNOIR_Whitepaper_v1.0.pdf" target="_blank">📄 Whitepaper</a>
+    <a href="https://pancakeswap.finance/swap?outputCurrency=0x21cB60543dA121ae3b5473b0A051f3E638E3e69E" target="_blank">💱 Buy EQNOIR™</a>
+    <a href="mailto:eqnoirproject@gmail.com">📧 Contact Us</a>
+  </div>
+
+  <!-- Socials -->
+  <div class="socials">
+    <a href="https://twitter.com/eqnoirproject" target="_blank">🐦</a>
+    <a href="https://instagram.com/eqnoirlabs" target="_blank">📸</a>
+    <a href="https://t.me/EQNOIR1" target="_blank">📲</a>
+    <a href="https://discord.gg/EQNOIR" target="_blank">💬</a>
+  </div>
+
+  <footer>
+    <p>© 2025 EQNOIR™. All Rights Reserved.</p>
+    <p>Cryptocurrency involves risk. Please do your own research before investing. EQNOIR™ is not responsible for financial losses.</p>
+  </footer>
+
+  <!-- Live Ticker Script -->
+  <script>
+    /* ====== CONFIG ====== */
+    const CONTRACT = "0x21cB60543dA121ae3b5473b0A051f3E638E3e69E";
+    const CIRC_SUPPLY = 630_000_000_000_000;      // circulating
+    const TOTAL_SUPPLY = 4_000_000_000_000_000;   // 4 quadrillion
+    const GECKO_TOOL_URL = ""; // 👉 paste your GeckoTerminal link here
+    /* ==================== */
+
+    const usd = n => isFinite(n) ? n.toLocaleString(undefined, {style:"currency", currency:"USD", maximumFractionDigits:10}) : "—";
+    const num = n => isFinite(n) ? Number(n).toLocaleString() : "—";
+    const pct = n => (n>=0?"+":"")+(isFinite(n)?Number(n).toFixed(2):"—")+"%";
+
+    function parseGeckoUrl(u){
+      try{
+        const url = new URL(u);
+        const parts = url.pathname.split("/").filter(Boolean);
+        const net = parts[0]; const kind = parts[1]; const id = parts[2];
+        if(kind === "tokens") return { api: `https://api.geckoterminal.com/api/v2/networks/${net}/tokens/${id}` };
+        if(kind === "pools")  return { api: `https://api.geckoterminal.com/api/v2/networks/${net}/pools/${id}` };
+        return null;
+      }catch(e){ return null; }
+    }
+
+    async function fromGeckoTool(){
+      const parsed = GECKO_TOOL_URL ? parseGeckoUrl(GECKO_TOOL_URL) : null;
+      if(!parsed) return null;
+      try{
+        const r = await fetch(parsed.api, {cache:"no-store"});
+        if(!r.ok) throw new Error("gt");
+        const j = await r.json();
+        const a = j.data?.attributes;
+        const price = Number(a.price_usd || a.base_token_price_usd || 0);
+        const fdv   = Number(a.fdv_usd ?? 0) || null;
+        const mcap  = Number(a.market_cap_usd ?? 0) || null;
+        return { src:"GT", price, fdv, mcap };
+      }catch(e){ return null; }
+    }
+
+    async function fromDexScreener(){
+      try{
+        let r = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${CONTRACT}`, {cache:"no-store"});
+        let j = await r.json();
+        let pairs = j.pairs || [];
+        if(!pairs.length){
+          r = await fetch(`https://api.dexscreener.com/latest/dex/search?q=${CONTRACT}`, {cache:"no-store"});
+          j = await r.json();
+          pairs = j.pairs || [];
+        }
+        if(!pairs.length) throw new Error("no-pairs");
+        const p = pairs.sort((a,b)=>(b.liquidity?.usd||0)-(a.liquidity?.usd||0))[0];
+        return { src:"DS", price:Number(p.priceUsd||0), fdv:Number(p.fdv||0)||null, mcap:null };
+      }catch(e){ return null; }
+    }
+
+    async function renderTicker(){
+      let d = await fromGeckoTool();
+      if(!d) d = await fromDexScreener();
+      const fdv = d?.fdv ?? (d ? d.price * TOTAL_SUPPLY : null);
+      const mcap = d?.mcap ?? (d ? d.price * CIRC_SUPPLY : null);
+      const parts = d ? [
+        `Price: ${usd(d.price)}`,
+        `FDV: ${fdv?usd(fdv):"—"}`,
+        `Market Cap: ${mcap?usd(mcap):"—"}`,
+        `Source: ${d.src}`,
+        `Updated: ${new Date().toLocaleTimeString()}`
+      ] : [ `EQNOIR: Live data unavailable` ];
+      const el = document.getElementById("tickerItems");
+      el.innerHTML = parts.map(t=>`<span class="chip">${t}</span>`).join("");
+      el.innerHTML += el.innerHTML;
+    }
+
+    renderTicker();
+    setInterval(renderTicker, 30_000);
+  </script>
+</body>
+</html>
